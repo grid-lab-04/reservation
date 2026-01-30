@@ -7,10 +7,27 @@ let reservasGlobais = {};
 // Esta "sacola" guarda as chaves selecionadas de vários dias/máquinas
 let selecoesTemporarias = new Set(); 
 
+const instrucoesMaquinas = {
+    "1": "Computador de alto desempenho. Evite renderizações acima de 4 horas sem supervisão.",
+    "2": "Servidor de Processamento: Não reinicie o sistema sem autorização do técnico.",
+    "3": "Máquina básica: Ideal para navegação e edição de textos simples.",
+    "4": "Equipamento com GPU: Exclusivo para projetos de Deep Learning e Visão Computacional.",
+    "5": "Computador de testes: Os arquivos salvos no Desktop são apagados toda sexta-feira.",
+    "6": "Instruções para a nova máquina: Por favor, mantenha o periférico limpo."
+};
+
 function configurarDataAtual() {
     const hoje = new Date();
     const dataFormatada = hoje.toISOString().split('T')[0];
     document.getElementById('data').value = dataFormatada;
+}
+
+function mostrarInstrucoes() {
+    const maquinaId = document.getElementById('maquina').value;
+    const labelInstrucoes = document.getElementById('texto-instrucoes');
+    
+    // Busca a instrução no objeto, ou usa um texto padrão se não encontrar
+    labelInstrucoes.innerText = instrucoesMaquinas[maquinaId] || "Sem instruções específicas para esta máquina.";
 }
 
 configurarDataAtual();
@@ -30,6 +47,8 @@ function atualizarAgenda() {
     corpoAgenda.innerHTML = '';
     const dataSelecionada = seletorData.value;
     const maquinaSelecionada = seletorMaquina.value;
+
+    mostrarInstrucoes();
 
     for (let hora = 0; hora < 24; hora++) {
         const horarioFormatado = `${hora}:00 - ${hora + 1}:00`;
