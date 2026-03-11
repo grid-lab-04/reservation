@@ -1,11 +1,65 @@
-const URL_API = "https://script.google.com/a/macros/det.ufc.br/s/AKfycbx5NTSYPFlAZUTRKoLCC-4EkBA4V3NvjLKIvpgBLOeaXm_Apgypn3XHg6TUBFAb644N/exec";
+const URL_API = "https://script.google.com/macros/s/AKfycbxrPBYVHOejuLsENsYu6pMz3z-Nc4_tthyvH9sk0uV1Ow_cUOZxAWG-kYGaAQ4eFr67/exec";
 
 const corpoAgenda = document.getElementById('corpo-agenda');
 const seletorData = document.getElementById('data');
 const seletorMaquina = document.getElementById('maquina');
 let reservasGlobais = {};
 // Esta "sacola" guarda as chaves selecionadas de vários dias/máquinas
-let selecoesTemporarias = new Set(); 
+let selecoesTemporarias = new Set();
+
+function formatarInstrucao(texto) {
+  return texto.replace(
+    "Equipamentos:",
+    "<strong>Equipamentos:</strong>"
+  ).replace(/\n/g, "<br>");
+}
+
+const instrucoesMaquinas = {
+    "1": "- Não levar bebidas ou comida à mesa do computador;"
+        + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
+        + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
+        + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
+        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+    "2": "- Não levar bebidas ou comida à mesa do computador;"
+        + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
+        + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
+        + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
+        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+    "3": "- Não levar bebidas ou comida à mesa do computador;"
+        + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
+        + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
+        + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
+        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+    "4": "- Não levar bebidas ou comida à mesa do computador;"
+        + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
+        + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
+        + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
+        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+    "5": "- Não levar bebidas ou comida à mesa do computador;"
+        + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
+        + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
+        + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
+        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+    "6": "- Não levar bebidas ou comida à mesa do computador;"
+        + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
+        + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
+        + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
+        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+    "7": "- Toda e qualquer impressão deverá ser comunicada ao responsável pelo GrID, informando a aplicação da peça impressa e quanto material será gasto;"
+        + "\n- Em caso de comportamento inesperado, falhas ou mal funcionamento, o usuário deverá relatar imediatamente o responsável pelo GrID;"    
+        + "\n- É prioritário o uso de filamentos já abertos;"
+        + "\n- Caso algum rolo de filamento se esgote, o usuário deverá relatar ao resposável pelo GrID para que seja dado baixa no quantitativo;"
+        + "\n- Manter a impressora limpa de resíduos de filamento e limpar a bandeja antes e após o uso;"
+        + "\n- Não usar as ferramentas da impressora para outros fins (Ex: alicate, espátula, etc.).",
+    "8": "- Toda e qualquer impressão deverá ser comunicada ao responsável pelo GrID, informando a aplicação da peça impressa e quanto material será gasto;"
+        + "\n- Em caso de comportamento inesperado, falhas ou mal funcionamento, o usuário deverá relatar imediatamente o responsável pelo GrID;"    
+        + "\n- É prioritário o uso de filamentos já abertos;"
+        + "\n- Caso algum rolo de filamento se esgote, o usuário deverá relatar ao resposável pelo GrID para que seja dado baixa no quantitativo;"
+        + "\n- Manter a impressora limpa de resíduos de filamento e limpar a bandeja antes e após o uso;"
+        + "\n- Não usar as ferramentas da impressora para outros fins (Ex: alicate, espátula, etc.).",
+    "9": "- Manter a sala limpa e organizada após o uso;"
+        + "\n- O uso de qualquer máquina durante a utilização da sala ocorrerá apenas se não ouver conflito de reservas."
+};
 
 function configurarDataAtual() {
     const hoje = new Date();
@@ -15,10 +69,10 @@ function configurarDataAtual() {
 
 function mostrarInstrucoes() {
     const maquinaId = document.getElementById('maquina').value;
-    const labelInstrucoes = document.getElementById('texto-instrucoes');
+    const labelInstrucoes = document.getElementById('texto-instrucoes').innerHTML = formatarInstrucao(instrucoesMaquinas[maquinaId]);
     
     // Busca a instrução no objeto, ou usa um texto padrão se não encontrar
-    labelInstrucoes.innerText = instrucoesMaquinas[maquinaId] || "Sem instruções específicas para esta máquina.";
+    labelInstrucoes.innerText = instrucoesMaquinas[maquinaId] || "Sem instruções específicas.";
 }
 
 configurarDataAtual();
@@ -38,6 +92,8 @@ function atualizarAgenda() {
     corpoAgenda.innerHTML = '';
     const dataSelecionada = seletorData.value;
     const maquinaSelecionada = seletorMaquina.value;
+
+    mostrarInstrucoes();
 
     for (let hora = 0; hora < 24; hora++) {
         const horarioFormatado = `${hora}:00 - ${hora + 1}:00`;
@@ -140,120 +196,3 @@ async function reservarSelecionados() {
 seletorData.addEventListener('change', atualizarAgenda);
 seletorMaquina.addEventListener('change', atualizarAgenda);
 carregarReservas();
-
-// const URL_API = "https://script.google.com/macros/s/AKfycbxbLYAFBdVjsyz3P7rQA5WF610FxjWC68ZD-xY9zzBKNgJ98qyBF_iGZD5C2mgJ0rWa/exec";
-
-// const corpoAgenda = document.getElementById('corpo-agenda');
-// const seletorData = document.getElementById('data');
-// const seletorMaquina = document.getElementById('maquina');
-// let reservasGlobais = {};
-
-// // Função para definir a data de hoje no seletor
-// function configurarDataAtual() {
-//     const hoje = new Date();
-//     const ano = hoje.getFullYear();
-//     const mes = String(hoje.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
-//     const dia = String(hoje.getDate()).padStart(2, '0');
-    
-//     const dataFormatada = `${ano}-${mes}-${dia}`;
-//     document.getElementById('data').value = dataFormatada;
-// }
-
-// // Chame a função imediatamente
-// configurarDataAtual();
-
-// async function carregarReservas() {
-//     corpoAgenda.innerHTML = '<tr><td colspan="3">Carregando horários...</td></tr>';
-//     try {
-//         const response = await fetch(URL_API);
-//         reservasGlobais = await response.json();
-//         atualizarAgenda();
-//     } catch (e) {
-//         corpoAgenda.innerHTML = '<tr><td colspan="3">Erro ao carregar dados.</td></tr>';
-//     }
-// }
-
-// function atualizarAgenda() {
-//     corpoAgenda.innerHTML = '';
-//     const dataSelecionada = seletorData.value;
-//     const maquinaSelecionada = seletorMaquina.value;
-
-//     for (let hora = 0; hora < 24; hora++) {
-//         const horarioFormatado = `${hora}:00 - ${hora + 1}:00`;
-//         const chaveReserva = `${dataSelecionada}-M${maquinaSelecionada}-${hora}`;
-//         const nomeReserva = reservasGlobais[chaveReserva];
-
-//         const tr = document.createElement('tr');
-//         tr.innerHTML = `
-//             <td>${horarioFormatado}</td>
-//             <td class="${nomeReserva ? 'ocupado' : 'disponivel'}">
-//                 ${nomeReserva ? `Reservado por: ${nomeReserva}` : 'Disponível'}
-//             </td>
-//             <td>
-//                 ${nomeReserva 
-//                     ? '---' 
-//                     : `<input type="checkbox" class="chk-reserva" value="${chaveReserva}">`
-//                 }
-//             </td>
-//         `;
-//         corpoAgenda.appendChild(tr);
-//     }
-// }
-
-// async function reservarSelecionados() {
-//     const nome = document.getElementById('nome').value;
-//     const email = document.getElementById('email').value;
-//     const orientador = document.getElementById('orientador').value;
-//     const senhaInformada = document.getElementById('senha-lab').value; // Pegamos a senha do campo
-//     const dataTxt = document.getElementById('data').value;
-//     const maquinaTxt = seletorMaquina.options[seletorMaquina.selectedIndex].text;
-
-//     if (!senhaInformada) return alert("Digite a senha do laboratório!");
-//     if (!nome || !email || !orientador) return alert("Preencha todos os dados!");
-
-//     const selecionados = document.querySelectorAll('.chk-reserva:checked');
-//     if (selecionados.length === 0) return alert("Selecione os horários!");
-
-//     const btn = document.getElementById('btn-confirmar');
-//     btn.disabled = true;
-//     btn.innerText = "Validando e Reservando...";
-
-//     for (let chk of selecionados) {
-//         try {
-//             const response = await fetch(URL_API, {
-//                 method: 'POST',
-//                 body: JSON.stringify({ 
-//                     action: 'reservar', 
-//                     senha: senhaInformada, // Enviamos a senha para o Google validar
-//                     chave: chk.value, 
-//                     nome: nome,
-//                     email: email,
-//                     orientador: orientador,
-//                     dataAgendamento: dataTxt,
-//                     maquina: maquinaTxt
-//                 })
-//             });
-
-//             const resultado = await response.text();
-            
-//             if (resultado.includes("Erro: Senha Incorreta")) {
-//                 alert("A senha informada está incorreta!");
-//                 btn.disabled = false;
-//                 btn.innerText = "Confirmar Reservas Selecionadas";
-//                 return; // Para o loop imediatamente
-//             }
-//         } catch (e) {
-//             console.error("Erro na reserva");
-//         }
-//     }
-
-//     alert("Reservas concluídas com sucesso!");
-//     document.getElementById('senha-lab').value = "";
-//     btn.disabled = false;
-//     btn.innerText = "Confirmar Reservas Selecionadas";
-//     carregarReservas();
-// }
-
-// seletorData.addEventListener('change', atualizarAgenda);
-// seletorMaquina.addEventListener('change', atualizarAgenda);
-// carregarReservas();
