@@ -18,6 +18,15 @@ header {
     margin-bottom: 30px;
 }
 
+.logo-lab{
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 header h1 {
     color: #2c3e50;
     margin-bottom: 10px;

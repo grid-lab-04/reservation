@@ -11,10 +11,24 @@
     <header>
         <h1>Sistema de agendamento do GrID</h1>
         <p>Selecione uma opção e reserve um horário.</p>
+        <img src="assets/logo_GrID.png" alt="Logo: GrID, Grupo de Inteligência de Dados" class="logo-lab">
     </header>
 
     <main>
         <section class="controles">
+            <div id="container-equipamentos" style="margin-bottom: 5px auto; margin-top: 20px auto; width: 100%; padding: 15px; border-left: 5px solid #007bff; background-color: #f8f9fa; border-radius: 4px;">
+                <strong>INFORMAÇÕES GERAIS:</strong>
+                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>1.</strong> Utilize roupas apropriadas para o ambiente de laboratório;</p>
+                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>2.</strong> Caso alguma máquina não esteja funcionando corretamente, informe imediatamente ao responsável pelo laboratório;</p>
+                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>3.</strong> Mantenha o laboratório limpo, organizado e evitar barulho;</p>
+                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>4.</strong> O uso de equipamentos fora do horário previsto pode ocorrer, desde que não interfira nas reservas registradas no sistema: <a href="https://grid-lab-04.github.io/reservation/">https://grid-lab-04.github.io/reservation/.</a></p>
+            </div>
+            
+            <div id="container-instrucoes" style="margin-bottom: 20px auto; margin-top: 5px auto; width: 100%; padding: 15px; border-left: 5px solid #f39c12; background-color: #f8f9fa; border-radius: 4px;">
+                <strong>INSTRUÇÕES DE USO:</strong>
+                <p id="texto-instrucoes" style="margin-top: 5px; color: #555;">Carregando...</p>
+            </div>
+
             <div class="linha">
                 <label for="data">Data:</label>
                 <input type="date" id="data">
@@ -37,19 +51,6 @@
                 <input type="text" id="nome" placeholder="Nome e sobrenome">
                 <input type="email" id="email" placeholder="E-mail de contato">
                 <input type="text" id="orientador" placeholder="Nome do orientador">
-            </div>
-            
-            <div id="container-equipamentos" style="margin-bottom: 5px auto; margin-top: 20px auto; width: 100%; padding: 15px; border-left: 5px solid #007bff; background-color: #f8f9fa; border-radius: 4px;">
-                <strong>INFORMAÇÕES GERAIS:</strong>
-                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>1.</strong> Utilize roupas apropriadas para o ambiente de laboratório;</p>
-                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>2.</strong> Caso alguma máquina não esteja funcionando corretamente, informe imediatamente ao responsável pelo laboratório;</p>
-                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>3.</strong> Mantenha o laboratório limpo, organizado e evitar barulho;</p>
-                <p id="texto-equipamentos" style="margin-top: 5px; color: #555;"><strong>4.</strong> O uso de equipamentos fora do horário previsto pode ocorrer, desde que não interfira nas reservas registradas no sistema: <a href="https://grid-lab-04.github.io/reservation/">https://grid-lab-04.github.io/reservation/.</a></p>
-            </div>
-            
-            <div id="container-instrucoes" style="margin-bottom: 20px auto; margin-top: 5px auto; width: 100%; padding: 15px; border-left: 5px solid #f39c12; background-color: #f8f9fa; border-radius: 4px;">
-                <strong>INSTRUÇÕES:</strong>
-                <p id="texto-instrucoes" style="margin-top: 5px; color: #555;">Carregando...</p>
             </div>
 
             <div class="area-confirmacao">
