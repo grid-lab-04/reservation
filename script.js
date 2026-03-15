@@ -69,10 +69,26 @@ function configurarDataAtual() {
 
 function mostrarInstrucoes() {
     const maquinaId = document.getElementById('maquina').value;
-    const labelInstrucoes = document.getElementById('texto-instrucoes').innerHTML = formatarInstrucao(instrucoesMaquinas[maquinaId]);
-    
-    // Busca a instrução no objeto, ou usa um texto padrão se não encontrar
-    labelInstrucoes.innerText = instrucoesMaquinas[maquinaId] || "Sem instruções específicas.";
+    const containerInstrucoes = document.getElementById('texto-instrucoes');
+    const containerImpressora = document.getElementById('campos-impressora');
+
+    // 1. Atualiza o texto de instruções (usando a lógica de formatação que você já tem)
+    if (instrucoesMaquinas[maquinaId]) {
+        containerInstrucoes.innerHTML = formatarInstrucao(instrucoesMaquinas[maquinaId]);
+    } else {
+        containerInstrucoes.innerHTML = "Selecione uma opção para ver as instruções.";
+    }
+
+    // 2. Lógica de visibilidade dos campos extras
+    // Assumindo que 7 e 8 são as suas impressoras no HTML
+    if (maquinaId === "7" || maquinaId === "8") {
+        containerImpressora.style.display = "block";
+    } else {
+        containerImpressora.style.display = "none";
+        // Limpa os campos quando esconde para não enviar lixo de uma reserva anterior
+        document.getElementById('material').value = "";
+        document.getElementById('destino').value = "";
+    }
 }
 
 configurarDataAtual();
@@ -161,7 +177,10 @@ async function reservarSelecionados() {
         return {
             chave: chave,
             data: `${partes[0]}-${partes[1]}-${partes[2]}`,
-            maquina: nomeExibido // Agora enviamos o nome completo e correto
+            maquina: nomeExibido,
+            infoExtra: (maquinaId === "7" || maquinaId === "8") 
+                   ? `Material: ${document.getElementById('material').value}g | Destino: ${document.getElementById('destino').value}`
+                   : "N/A"
         };
     });
 

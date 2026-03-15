@@ -223,3 +223,28 @@ input[type="checkbox"] {
 .aviso-cancelamento a:hover {
     text-decoration: underline;
 }
+
+/* style.css */
+
+.linha input[type="number"], 
+.linha input[type="text"] {
+    flex: 1; /* Faz o campo crescer e ocupar o espaço restante */
+    min-width: 100px; /* Garante que ele não suma em telas muito pequenas */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Garante que a div de informações da impressora use todo o 100% da largura */
+#campos-impressora {
+    width: 100%; 
+    box-sizing: border-box; /* Evita que o padding "estoure" a largura */
+}
+
+/* Faz com que os itens dentro da linha da impressora se alinhem bem */
+#campos-impressora .linha {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre label e input */
+    width: 100%;
+}
