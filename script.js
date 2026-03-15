@@ -157,6 +157,7 @@ async function reservarSelecionados() {
     const orientador = document.getElementById('orientador').value;
     const senhaInformada = document.getElementById('senha-lab').value;
     const seletor = document.getElementById('maquina'); // Referência ao select
+    const maquinaId = seletor.value;
 
     if (!senhaInformada) return alert("Digite a senha do laboratório!");
     if (!nome || !email || !orientador) return alert("Preencha todos os dados!");
