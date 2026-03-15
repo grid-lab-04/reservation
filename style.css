@@ -225,8 +225,6 @@ input[type="checkbox"] {
 }
 
 /* style.css */
-
-.linha input[type="number"], 
 .linha input[type="text"] {
     flex: 1; /* Faz o campo crescer e ocupar o espaço restante */
     min-width: 100px; /* Garante que ele não suma em telas muito pequenas */
