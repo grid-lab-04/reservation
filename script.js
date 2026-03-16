@@ -192,7 +192,11 @@ async function reservarSelecionados() {
                 action: 'reservar_lote', 
                 senha: senhaInformada,
                 usuario: { nome, email, orientador }, // Isso garante que os dados cheguem ao e-mail
-                reservas: listaReservas
+                reservas: listaReservas,
+                detalhesImpressao: { 
+                    material: materialValor, 
+                    destino: destinoValor 
+                }
             })
         });
 
