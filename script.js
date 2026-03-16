@@ -159,6 +159,9 @@ async function reservarSelecionados() {
     const seletor = document.getElementById('maquina'); // Referência ao select
     const maquinaId = seletor.value;
 
+    const materialValor = document.getElementById('material').value;
+    const destinoValor = document.getElementById('destino').value;
+
     if (!senhaInformada) return alert("Digite a senha do laboratório!");
     if (!nome || !email || !orientador) return alert("Preencha todos os dados!");
     if (selecoesTemporarias.size === 0) return alert("Selecione pelo menos um horário!");
