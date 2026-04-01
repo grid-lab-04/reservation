@@ -186,7 +186,7 @@ async function reservarSelecionados() {
             data: `${partes[0]}-${partes[1]}-${partes[2]}`,
             maquina: nomeExibido,
             infoExtra: (maquinaId === "7" || maquinaId === "8") 
-                   ? `Material: ${document.getElementById('material').value}g | Destino: ${document.getElementById('destino').value}`
+                   ? `Material: ${document.getElementById('material').value}g | Destino: ${document.getElementById('descricao').value}`
                    : "N/A"
         };
     });
