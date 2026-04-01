@@ -7,8 +7,6 @@ let reservasGlobais = {};
 // Esta "sacola" guarda as chaves selecionadas de vários dias/máquinas
 let selecoesTemporarias = new Set();
 
-// Impede selecionar datas anteriores a hoje no calendário
-document.getElementById('data').min = new Date().toISOString().split("T")[0];
 
 function formatarInstrucao(texto) {
   return texto.replace(
@@ -68,6 +66,7 @@ function configurarDataAtual() {
     const hoje = new Date();
     const dataFormatada = hoje.toISOString().split('T')[0];
     document.getElementById('data').value = dataFormatada;
+    document.getElementById('data').min = new Date().toISOString().split("T")[0];
 }
 
 function mostrarInstrucoes() {
@@ -90,7 +89,7 @@ function mostrarInstrucoes() {
         containerImpressora.style.display = "none";
         // Limpa os campos quando esconde para não enviar lixo de uma reserva anterior
         document.getElementById('material').value = "";
-        document.getElementById('destino').value = "";
+        document.getElementById('descricao').value = "";
     }
 }
 
@@ -158,15 +157,16 @@ async function reservarSelecionados() {
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
     const orientador = document.getElementById('orientador').value;
+    const projeto = document.getElementById('projeto').value;
     const senhaInformada = document.getElementById('senha-lab').value;
-    const seletor = document.getElementById('maquina'); // Referência ao select
+    const seletor = document.getElementById('maquina');
     const maquinaId = seletor.value;
 
     const materialValor = document.getElementById('material').value;
-    const destinoValor = document.getElementById('destino').value;
+    const descricaoValor = document.getElementById('descricao').value;
 
     if (!senhaInformada) return alert("Digite a senha do laboratório!");
-    if (!nome || !email || !orientador) return alert("Preencha todos os dados!");
+    if (!nome || !email || !orientador || !projeto) return alert("Preencha todos os dados!");
     if (selecoesTemporarias.size === 0) return alert("Selecione pelo menos um horário!");
 
     const btn = document.getElementById('btn-confirmar');
@@ -197,11 +197,11 @@ async function reservarSelecionados() {
             body: JSON.stringify({ 
                 action: 'reservar_lote', 
                 senha: senhaInformada,
-                usuario: { nome, email, orientador }, // Isso garante que os dados cheguem ao e-mail
+                usuario: { nome, email, orientador, projeto }, // Isso garante que os dados cheguem ao e-mail
                 reservas: listaReservas,
                 detalhesImpressao: { 
                     material: materialValor, 
-                    destino: destinoValor 
+                    descricao: descricaoValor 
                 }
             })
         });

@@ -25,9 +25,16 @@
             </div>
             
             <div id="container-instrucoes" style="margin-bottom: 20px auto; margin-top: 5px auto; width: 100%; padding: 15px; border-left: 5px solid #f39c12; background-color: #f8f9fa; border-radius: 4px;">
-                <strong>INSTRUÇÕES DE USO:</strong>
+                <strong>INSTRUÇÕES DE USO PARA O EQUIPAMENTO SELECIONADO:</strong>
                 <p id="texto-instrucoes" style="margin-top: 5px; color: #555;">Carregando...</p>
             </div>
+            
+                <div class="linha-seguranca">
+                    <input type="text" id="nome" placeholder="Nome e sobrenome">
+                    <input type="email" id="email" placeholder="E-mail de contato">
+                    <input type="text" id="orientador" placeholder="Nome do orientador">
+                    <input type="text" id="projeto" placeholder="Projeto/Pesquisa vinculado(a) ao uso">
+                </div>
 
             <div class="linha">
                 <label for="data">Data:</label>
@@ -46,12 +53,6 @@
                     <option value="9">Sala - Reunião fechada</option>
                 </select>
             </div>
-            
-                <div class="linha-seguranca">
-                    <input type="text" id="nome" placeholder="Nome e sobrenome">
-                    <input type="email" id="email" placeholder="E-mail de contato">
-                    <input type="text" id="orientador" placeholder="Nome do orientador">
-                </div>
 
             <div id="campos-impressora" style="display: none; margin-top: 15px; padding: 15px; width: 100%; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ffeeba;">
                 <h4 style="margin-bottom: 10px; color: #856404;">Informações de Impressão</h4>
@@ -59,8 +60,8 @@
                     <label for="material">Material estimado (g):</label>
                     <input type="text" id="material" placeholder="Ex: 50 (vermelho) e 100 (preto)">
                     
-                    <label for="destino">Destino/Projeto:</label>
-                    <input type="text" id="destino" placeholder="Ex: Pesquisa - Peça X">
+                    <label for="destino">Descrição da peça:</label>
+                    <input type="text" id="descricao" placeholder="Ex: Suporte">
                 </div>
             </div>
 
