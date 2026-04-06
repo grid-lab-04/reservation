@@ -7,7 +7,6 @@ let reservasGlobais = {};
 // Esta "sacola" guarda as chaves selecionadas de vários dias/máquinas
 let selecoesTemporarias = new Set();
 
-
 function formatarInstrucao(texto) {
   return texto.replace(
     "Equipamentos:",
@@ -66,6 +65,7 @@ function configurarDataAtual() {
     const hoje = new Date();
     const dataFormatada = hoje.toISOString().split('T')[0];
     document.getElementById('data').value = dataFormatada;
+    // Impede selecionar datas anteriores a hoje no calendário
     document.getElementById('data').min = new Date().toISOString().split("T")[0];
 }
 
@@ -153,21 +153,27 @@ function gerenciarSelecao(checkbox) {
         : "Confirmar Reservas Selecionadas";
 }
 
+function validarEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
 async function reservarSelecionados() {
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
     const orientador = document.getElementById('orientador').value;
     const projeto = document.getElementById('projeto').value;
     const senhaInformada = document.getElementById('senha-lab').value;
-    const seletor = document.getElementById('maquina');
+    const seletor = document.getElementById('maquina'); // Referência ao select
     const maquinaId = seletor.value;
 
     const materialValor = document.getElementById('material').value;
-    const descricaoValor = document.getElementById('descricao').value;
+    const destinoValor = document.getElementById('descricao').value;
 
-    if (!senhaInformada) return alert("Digite a senha do laboratório!");
+    if (!senhaInformada)                            return alert("Digite a senha do laboratório!");
     if (!nome || !email || !orientador || !projeto) return alert("Preencha todos os dados!");
-    if (selecoesTemporarias.size === 0) return alert("Selecione pelo menos um horário!");
+    if (selecoesTemporarias.size === 0)             return alert("Selecione pelo menos um horário!");
+    if (!validarEmail(email))                       return alert("Insira um e-mail válido.");
 
     const btn = document.getElementById('btn-confirmar');
     btn.disabled = true;
@@ -201,7 +207,7 @@ async function reservarSelecionados() {
                 reservas: listaReservas,
                 detalhesImpressao: { 
                     material: materialValor, 
-                    descricao: descricaoValor 
+                    descricao: destinoValor 
                 }
             })
         });
