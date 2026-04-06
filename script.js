@@ -57,8 +57,15 @@ const instrucoesMaquinas = {
         + "\n- Caso algum rolo de filamento se esgote, o usuário deverá relatar ao resposável pelo GrID para que seja dado baixa no quantitativo;"
         + "\n- Manter a impressora limpa de resíduos de filamento e limpar a bandeja antes e após o uso;"
         + "\n- Não usar as ferramentas da impressora para outros fins (Ex: alicate, espátula, etc.).",
-    "9": "- Manter a sala limpa e organizada após o uso;"
-        + "\n- O uso de qualquer máquina durante a utilização da sala ocorrerá apenas se não ouver conflito de reservas."
+    "9": "- Não usar a estação sem treinamento prévio;"
+        + "\n- A ponta é extremamente quente (300 °C+). Não toque e sempre use o suporte;"
+        + "\n- Evite inalar a fumaça da solda;"
+        + "\n- Temperatura: Ajuste conforme a solda (≈330 °C comum | ≈370 °C sem chumbo);"
+        + "\n- Mantenha a ponta limpa e estanhada. Use esponja ou lã metálica. NUNCA usar para aquecer ou derreter outros materiais;"
+        + "\n- Guarde a solda, fluxo e ferramentas nos locais designados;"
+        + "\n- Ao final, desligue a estação, deixe a bancada limpa, organizada e pronta para o próximo usuário.",
+    "10": "- Será adicionado em breve",
+    "11": "- Será adicionado em breve"
 };
 
 function configurarDataAtual() {
