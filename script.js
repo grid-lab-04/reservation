@@ -19,32 +19,32 @@ const instrucoesMaquinas = {
         + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
         + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
         + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
-        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+        + "\n- Criação ou exclusão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
     "2": "- Não levar bebidas ou comida à mesa do computador;"
         + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
         + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
         + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
-        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+        + "\n- Criação ou exclusão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
     "3": "- Não levar bebidas ou comida à mesa do computador;"
         + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
         + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
         + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
-        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+        + "\n- Criação ou exclusão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
     "4": "- Não levar bebidas ou comida à mesa do computador;"
         + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
         + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
         + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
-        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+        + "\n- Criação ou exclusão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
     "5": "- Não levar bebidas ou comida à mesa do computador;"
         + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
         + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
         + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
-        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+        + "\n- Criação ou exclusão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
     "6": "- Não levar bebidas ou comida à mesa do computador;"
         + "\n- Não desconectar os cabos do computador, exceto com autorização do responsável pelo GrID;"
         + "\n- Desligar o computador ao final do uso (seja presencial ou remoto);"
         + "\n- Solicitações de uso remoto durante o final de semana será passivel de rejeição, tendo em vista oscilações na rede elétrica observadas na sexta-feira;"
-        + "\n- Criação ou excluisão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
+        + "\n- Criação ou exclusão de usuários será feito unicamente pelo responsável do GrID ou pela administração do INCT-Infra.",
     "7": "- Toda e qualquer impressão deverá ser comunicada ao responsável pelo GrID, informando a aplicação da peça impressa e quanto material será gasto;"
         + "\n- Em caso de comportamento inesperado, falhas ou mal funcionamento, o usuário deverá relatar imediatamente o responsável pelo GrID;"    
         + "\n- É prioritário o uso de filamentos já abertos;"
