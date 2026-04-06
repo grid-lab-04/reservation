@@ -64,8 +64,8 @@ const instrucoesMaquinas = {
         + "\n- Mantenha a ponta limpa e estanhada. Use esponja ou lã metálica. NUNCA usar para aquecer ou derreter outros materiais;"
         + "\n- Guarde a solda, fluxo e ferramentas nos locais designados;"
         + "\n- Ao final, desligue a estação, deixe a bancada limpa, organizada e pronta para o próximo usuário.",
-    "10": "- Será adicionado em breve",
-    "11": "- Será adicionado em breve"
+    "10": "- Não manusear sem treinamento prévio.",
+    "11": "- Não manusear sem treinamento prévio."
 };
 
 function configurarDataAtual() {
