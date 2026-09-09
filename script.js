@@ -116,7 +116,29 @@ async function carregarReservas() {
     corpoAgenda.innerHTML = '<tr><td colspan="3">Carregando horários...</td></tr>';
     try {
         const response = await fetch(URL_API);
-        reservasGlobais = await response.json();
+        const dadosBrutos = await response.json();
+        
+        // Limpa o objeto global de reservas
+        reservasGlobais = {};
+
+        // Agrupa múltiplos nomes que agendaram no mesmo dia, máquina e horário
+        for (const chave in dadosBrutos) {
+            const nomeUsuario = dadosBrutos[chave];
+            
+            // Extrai a chave base de agendamento (remove o sufixo -RET... se existir)
+            // Exemplo: "2026-09-09-M10-17-RET123" vira "2026-09-09-M10-17"
+            const partes = chave.split('-');
+            const chavePadrao = `${partes[0]}-${partes[1]}-${partes[2]}-${partes[3]}-${partes[4]}`;
+
+            if (!reservasGlobais[chavePadrao]) {
+                reservasGlobais[chavePadrao] = [];
+            }
+            // Adiciona o nome à lista do horário se ele ainda não estiver nela
+            if (!reservasGlobais[chavePadrao].includes(nomeUsuario)) {
+                reservasGlobais[chavePadrao].push(nomeUsuario);
+            }
+        }
+
         atualizarAgenda();
     } catch (e) {
         corpoAgenda.innerHTML = '<tr><td colspan="3">Erro ao carregar dados.</td></tr>';
@@ -134,21 +156,84 @@ function atualizarAgenda() {
         const horarioFormatado = `${hora}:00 - ${hora + 1}:00`;
         const chaveReservaPadrao = `${dataSelecionada}-M${maquinaSelecionada}-${hora}`;
         
-        // REQUISITO 2: Se for a Maleta de Ferramentas (item 10), ignora o bloqueio
         const ehMaleta = maquinaSelecionada === "10";
-        const nomeReserva = ehMaleta ? null : reservasGlobais[chaveReservaPadrao];
+        const listaNomes = reservasGlobais[chaveReservaPadrao] || [];
+        const temReserva = listaNomes.length > 0;
 
-        // Verifica se esta chave já está na nossa "sacola" de seleções
+        // Para os outros equipamentos, se tiver reserva fica bloqueado
+        // Para a Maleta (10), nunca fica bloqueado
+        const estaBloqueado = !ehMaleta && temReserva;
+
+        // Monta o texto dos status de reservas
+        let textoStatus = 'Disponível';
+        if (temReserva) {
+            if (ehMaleta) {
+                // Para a maleta, lista todos os nomes separados por vírgula
+                textoStatus = `Reservado por: ${listaNomes.join(', ')}`;
+            } else {
+                textoStatus = `Reservado por: ${listaNomes[0]}`;
+            }
+        }
+
         const estaMarcado = selecoesTemporarias.has(chaveReservaPadrao) ? 'checked' : '';
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${horarioFormatado}</td>
-            <td class="${nomeReserva ? 'ocupado' : 'disponivel'}">
-                ${nomeReserva ? `Reservado por: ${nomeReserva}` : 'Disponível'}
+            <td class="${estaBloqueado ? 'ocupado' : (ehMaleta && temReserva ? 'ocupado' : 'disponivel')}">
+                ${textoStatus}
             </td>
             <td>
-                ${nomeReserva 
+                ${estaBloqueado 
+                    ? '---' 
+                    : `<input type="checkbox" class="chk-reserva" value="${chaveReservaPadrao}" ${estaMarcado} onchange="gerenciarSelecao(this)">`
+                }
+            </td>
+        `;
+        corpoAgenda.appendChild(tr);
+    }
+}
+
+function atualizarAgenda() {
+    corpoAgenda.innerHTML = '';
+    const dataSelecionada = seletorData.value;
+    const maquinaSelecionada = seletorMaquina.value;
+
+    mostrarInstrucoes();
+
+    for (let hora = 0; hora < 24; hora++) {
+        const horarioFormatado = `${hora}:00 - ${hora + 1}:00`;
+        const chaveReservaPadrao = `${dataSelecionada}-M${maquinaSelecionada}-${hora}`;
+        
+        const ehMaleta = maquinaSelecionada === "10";
+        const listaNomes = reservasGlobais[chaveReservaPadrao] || [];
+        const temReserva = listaNomes.length > 0;
+
+        // Para os outros equipamentos, se tiver reserva fica bloqueado
+        // Para a Maleta (10), nunca fica bloqueado
+        const estaBloqueado = !ehMaleta && temReserva;
+
+        // Monta o texto dos status de reservas
+        let textoStatus = 'Disponível';
+        if (temReserva) {
+            if (ehMaleta) {
+                // Para a maleta, lista todos os nomes separados por vírgula
+                textoStatus = `Reservado por: ${listaNomes.join(', ')}`;
+            } else {
+                textoStatus = `Reservado por: ${listaNomes[0]}`;
+            }
+        }
+
+        const estaMarcado = selecoesTemporarias.has(chaveReservaPadrao) ? 'checked' : '';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${horarioFormatado}</td>
+            <td class="${estaBloqueado ? 'ocupado' : (ehMaleta && temReserva ? 'ocupado' : 'disponivel')}">
+                ${textoStatus}
+            </td>
+            <td>
+                ${estaBloqueado 
                     ? '---' 
                     : `<input type="checkbox" class="chk-reserva" value="${chaveReservaPadrao}" ${estaMarcado} onchange="gerenciarSelecao(this)">`
                 }
