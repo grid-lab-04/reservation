@@ -1,4 +1,5 @@
 const URL_API = "https://script.google.com/macros/s/AKfycbwrpGF-2n8Ou_6i02g6pB1sLWN205rCTQB81ZSBc2dSx7nvffBiNdYf1ve1MkihbEMiYw/exec";
+// const URL_API = "https://script.google.com/macros/s/AKfycby-KqZpI4gPRu88Hik9noUvjvqxBpZYXO8luu8X1ujQCULf5FV1rSp8gLI6ESvrHRCT/exec"; //teste
 
 const corpoAgenda = document.getElementById('corpo-agenda');
 const seletorData = document.getElementById('data');
@@ -58,13 +59,15 @@ const instrucoesMaquinas = {
         + "\n- Manter a impressora limpa de resíduos de filamento e limpar a bandeja antes e após o uso;"
         + "\n- Não usar as ferramentas da impressora para outros fins (Ex: alicate, espátula, etc.).",
     "9": "- Não usar a estação sem treinamento prévio;"
-        + "\n- A ponta é extremamente quente (300 °C+). Não toque e sempre use o suporte;"
+        + "\n- A ponta é extremamente quente (300 °C). Não toque e sempre use o suporte;"
         + "\n- Evite inalar a fumaça da solda;"
         + "\n- Temperatura: Ajuste conforme a solda (≈330 °C comum | ≈370 °C sem chumbo);"
         + "\n- Mantenha a ponta limpa e estanhada. Use esponja ou lã metálica. NUNCA usar para aquecer ou derreter outros materiais;"
         + "\n- Guarde a solda, fluxo e ferramentas nos locais designados;"
         + "\n- Ao final, desligue a estação, deixe a bancada limpa, organizada e pronta para o próximo usuário.",
-    "10": "- Não manusear sem treinamento prévio.",
+    "10": "- Usar ferramentas de forma adequada, sem risco de danificar submetendo-as em condições extremas para o seu uso;"
+        + "\n- Manter as ferramentas limpas e preservadas;"
+        + "\n- Ao final do uso, guardar as ferramentas no seu devido compartimento dentro da maleta de ferramentas.",
     "11": "- Não manusear sem treinamento prévio."
 };
 
@@ -80,23 +83,30 @@ function mostrarInstrucoes() {
     const maquinaId = document.getElementById('maquina').value;
     const containerInstrucoes = document.getElementById('texto-instrucoes');
     const containerImpressora = document.getElementById('campos-impressora');
+    const containerFerramentas = document.getElementById('campo-ferramentas');
 
-    // 1. Atualiza o texto de instruções (usando a lógica de formatação que você já tem)
+    // 1. Atualiza o texto de instruções
     if (instrucoesMaquinas[maquinaId]) {
         containerInstrucoes.innerHTML = formatarInstrucao(instrucoesMaquinas[maquinaId]);
     } else {
         containerInstrucoes.innerHTML = "Selecione uma opção para ver as instruções.";
     }
 
-    // 2. Lógica de visibilidade dos campos extras
-    // Assumindo que 7 e 8 são as suas impressoras no HTML
+    // 2. Lógica de visibilidade dos campos extras de Impressora 3D
     if (maquinaId === "7" || maquinaId === "8") {
         containerImpressora.style.display = "block";
     } else {
         containerImpressora.style.display = "none";
-        // Limpa os campos quando esconde para não enviar lixo de uma reserva anterior
         document.getElementById('material').value = "";
         document.getElementById('descricao').value = "";
+    }
+
+    // 3. Lógica de visibilidade para Maleta de Ferramentas (item 10)
+    if (maquinaId === "10") {
+        containerFerramentas.style.display = "block";
+    } else {
+        containerFerramentas.style.display = "none";
+        document.getElementById('descricaoFerramentas').value = "";
     }
 }
 
@@ -122,11 +132,14 @@ function atualizarAgenda() {
 
     for (let hora = 0; hora < 24; hora++) {
         const horarioFormatado = `${hora}:00 - ${hora + 1}:00`;
-        const chaveReserva = `${dataSelecionada}-M${maquinaSelecionada}-${hora}`;
-        const nomeReserva = reservasGlobais[chaveReserva];
+        const chaveReservaPadrao = `${dataSelecionada}-M${maquinaSelecionada}-${hora}`;
+        
+        // REQUISITO 2: Se for a Maleta de Ferramentas (item 10), ignora o bloqueio
+        const ehMaleta = maquinaSelecionada === "10";
+        const nomeReserva = ehMaleta ? null : reservasGlobais[chaveReservaPadrao];
 
         // Verifica se esta chave já está na nossa "sacola" de seleções
-        const estaMarcado = selecoesTemporarias.has(chaveReserva) ? 'checked' : '';
+        const estaMarcado = selecoesTemporarias.has(chaveReservaPadrao) ? 'checked' : '';
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -137,7 +150,7 @@ function atualizarAgenda() {
             <td>
                 ${nomeReserva 
                     ? '---' 
-                    : `<input type="checkbox" class="chk-reserva" value="${chaveReserva}" ${estaMarcado} onchange="gerenciarSelecao(this)">`
+                    : `<input type="checkbox" class="chk-reserva" value="${chaveReservaPadrao}" ${estaMarcado} onchange="gerenciarSelecao(this)">`
                 }
             </td>
         `;
@@ -153,7 +166,6 @@ function gerenciarSelecao(checkbox) {
         selecoesTemporarias.delete(checkbox.value);
     }
     
-    // Opcional: Atualiza o texto do botão com a contagem
     const btn = document.getElementById('btn-confirmar');
     btn.innerText = selecoesTemporarias.size > 0 
         ? `Confirmar ${selecoesTemporarias.size} reserva(s)` 
@@ -171,36 +183,49 @@ async function reservarSelecionados() {
     const orientador = document.getElementById('orientador').value;
     const projeto = document.getElementById('projeto').value;
     const senhaInformada = document.getElementById('senha-lab').value;
-    const seletor = document.getElementById('maquina'); // Referência ao select
+    const seletor = document.getElementById('maquina');
     const maquinaId = seletor.value;
 
     const materialValor = document.getElementById('material').value;
     const destinoValor = document.getElementById('descricao').value;
+    const ferramentasValor = document.getElementById('descricaoFerramentas').value;
 
     if (!senhaInformada)                            return alert("Digite a senha do laboratório!");
     if (!nome || !email || !orientador || !projeto) return alert("Preencha todos os dados!");
     if (selecoesTemporarias.size === 0)             return alert("Selecione pelo menos um horário!");
     if (!validarEmail(email))                       return alert("Insira um e-mail válido.");
 
+    // Validação para o item 10 (Maleta de Ferramentas)
+    if (maquinaId === "10" && !ferramentasValor.trim()) {
+        return alert("Por favor, descreva quais ferramentas você irá retirar da maleta!");
+    }
+
     const btn = document.getElementById('btn-confirmar');
     btn.disabled = true;
     btn.innerText = "Processando...";
 
-    // Criamos a lista de reservas capturando o nome exibido no HTML
-    const listaReservas = Array.from(selecoesTemporarias).map(chave => {
+    // Criamos a lista de reservas
+    const listaReservas = Array.from(selecoesTemporarias).map((chave, index) => {
         const partes = chave.split('-');
         const idMaquina = partes[3].replace('M', '');
-        
-        // Esta linha busca o texto (ex: "Impressora 3D 02 - Bambu Lab") baseado no value
         const nomeExibido = seletor.querySelector(`option[value="${idMaquina}"]`).text;
 
+        // Determina a informação extra baseada na máquina selecionada
+        let infoExtra_ = "N/A";
+        if (idMaquina === "7" || idMaquina === "8") {
+            infoExtra_ = `Material: ${materialValor}g | Destino: ${destinoValor}`;
+        } else if (idMaquina === "10") {
+            infoExtra_ = `Ferramentas: ${ferramentasValor}`;
+        }
+
+        // Para a maleta (10), adiciona um sufixo para garantir chave única na planilha
+        const chaveFinal = (idMaquina === "10") ? `${chave}-RET${Date.now()}_${index}` : chave;
+
         return {
-            chave: chave,
+            chave: chaveFinal,
             data: `${partes[0]}-${partes[1]}-${partes[2]}`,
             maquina: nomeExibido,
-            infoExtra: (maquinaId === "7" || maquinaId === "8") 
-                   ? `Material: ${document.getElementById('material').value}g | Destino: ${document.getElementById('descricao').value}`
-                   : "N/A"
+            infoExtra: infoExtra_
         };
     });
 
@@ -210,12 +235,13 @@ async function reservarSelecionados() {
             body: JSON.stringify({ 
                 action: 'reservar_lote', 
                 senha: senhaInformada,
-                usuario: { nome, email, orientador, projeto }, // Isso garante que os dados cheguem ao e-mail
+                usuario: { nome, email, orientador, projeto },
                 reservas: listaReservas,
                 detalhesImpressao: { 
                     material: materialValor, 
                     descricao: destinoValor 
-                }
+                },
+                detalhesFerramentas: ferramentasValor
             })
         });
 

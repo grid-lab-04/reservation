@@ -51,9 +51,10 @@
                     <option value="7">Impressora 3D 01 - Creality</option>
                     <option value="8">Impressora 3D 02 - Bambu Lab</option>
                     <option value="9">Estação de solda</option>
-                    <option value="10">E-Vibe</option>
-                    <!-- <option value="11">AggregateScan</option> -->
-                    <!-- <option value="10">Sala - Reunião fechada</option> -->
+                    <option value="10">Maleta de Ferramentas</option>
+                    <option value="11">E-Vibe</option>
+                    <!-- <option value="12">AggregateScan</option> -->
+                    <!-- <option value="13">Sala - Reunião fechada</option> -->
                 </select>
             </div>
 
@@ -65,6 +66,15 @@
                     
                     <label for="destino">Descrição da peça:</label>
                     <input type="text" id="descricao" placeholder="Ex: Suporte">
+                </div>
+            </div>
+
+            <!-- Campo visível apenas quando a Maleta (value="10") for selecionada -->
+            <div id="campo-ferramentas" style="display: none; margin-top: 15px; padding: 15px; width: 100%; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ffeeba;">
+                <h4 style="margin-bottom: 10px; color: #856404;">Ferramentas Retiradas</h4>
+                <div class="linha">
+                    <label for="descricaoFerramentas">Descreva quais ferramentas você irá retirar:</label>
+                    <input type="text" id="descricaoFerramentas" placeholder="Ex: Alicate universal, Chave Phillips, Multímetro...">
                 </div>
             </div>
 
