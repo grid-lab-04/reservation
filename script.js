@@ -187,7 +187,7 @@ function atualizarAgenda() {
                 textoStatus = `Reservado por: ${listaNomes[0]}`;
             } else if (reservadoPorOutraMaquina) {
                 estaBloqueado = false;
-                textoStatus = `Aviso: Em uso (${reservadoPorOutraMaquina}) - Sujeito a análise da gerência`;
+                textoStatus = `Existe(m) equipamento(s) reservado(s) - Sujeito a análise da gerência`; //posso colocar o nome de alguém com ${reservadoPorOutraMaquina}
             }
         } else if (ehMaleta) {
             estaBloqueado = false;
